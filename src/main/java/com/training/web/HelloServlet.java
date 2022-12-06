@@ -3,6 +3,7 @@ package com.training.web;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,14 +39,13 @@ public class HelloServlet extends HttpServlet {
 		
 		System.out.println("Username is: "+userName);
 		
-		response.setContentType("text/html");
-		PrintWriter out = response.getWriter();
+		request.setAttribute("msg", userName);
 		
-		out.println("<HTML>");
-		out.println("<HEAD><TITLE>hello world</TITLE></HEAD>");
-		out.println("<BODY>");
-		out.println("<h1>Hello World! from Servlet "+userName +"</h1> ");
-		out.println("</BODY></HTML>");
+		//response.setContentType("text/html");
+		//PrintWriter out = response.getWriter();
+		
+		RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
+		rd.forward(request, response);
 	}
 
 	/**
