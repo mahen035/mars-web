@@ -39,7 +39,12 @@ public class HelloServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
+		String userName = request.getParameter("uname");
+		String pass = request.getParameter("pwd");
+		boolean isValid = false;
+		
 		try {
+						
 			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
 			
 			String url = "jdbc:sqlserver://localhost:1433;"+
@@ -56,7 +61,11 @@ public class HelloServlet extends HttpServlet {
 			ResultSet rs = stmt.executeQuery("select * from user1");
 			
 			while(rs.next()) {
-				System.out.println(rs.getString(2)+": "+rs.getString(3));
+				//System.out.println(rs.getString(2)+": "+rs.getString(3));
+				if(userName.equalsIgnoreCase(rs.getString(2)) && pass.equalsIgnoreCase(rs.getString(3))) {
+					isValid = true;
+				}
+				
 			}
 			
 		} catch (Exception e) {
@@ -65,15 +74,9 @@ public class HelloServlet extends HttpServlet {
 		}
 		
 		
-		
-		
-		String userName = request.getParameter("uname");
-		String password = request.getParameter("pwd");
-		
-
 		request.setAttribute("name", userName);
 		
-		if(userName.equalsIgnoreCase("root") && password.equalsIgnoreCase("123")) {
+		if(isValid) {
 			RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
 			rd.forward(request, response);
 		}
