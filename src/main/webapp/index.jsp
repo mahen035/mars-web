@@ -10,6 +10,7 @@
 	<h1>Hello World!</h1>
 	<form action ="<%=request.getContextPath() %>/hello" method="post">
 		<input type ="text" placeholder ="Enter name" name = "uname"/><br>
+		<input type ="password" placeholder ="Enter password" name = "pwd"/><br>
 		<input type = "submit" value = "Click"/>
 	</form><br>
 	<!--  

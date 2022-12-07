@@ -7,7 +7,6 @@
 <title>Insert title here</title>
 </head>
 <body>
-
-<h1>Welcome <%=request.getAttribute("name") %>!</h1>
+<h1 style = "color:red">Incorrect Credentials!!</h1>
 </body>
 </html>
