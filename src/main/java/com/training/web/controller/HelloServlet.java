@@ -1,11 +1,12 @@
-package com.training.web;
+package com.training.web.controller;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -13,6 +14,9 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.training.web.model.User;
+import com.training.web.service.UserService;
 
 /**
  * Servlet implementation class HelloServlet
@@ -41,42 +45,11 @@ public class HelloServlet extends HttpServlet {
 		
 		String userName = request.getParameter("uname");
 		String pass = request.getParameter("pwd");
-		boolean isValid = false;
-		
-		try {
-						
-			Class.forName("com.microsoft.sqlserver.jdbc.SQLServerDriver");
-			
-			String url = "jdbc:sqlserver://localhost:1433;"+
-						"databaseName=mars_sept";
-			
-			String user = "sa";
-			
-			String password = "root";
-			
-			Connection con = DriverManager.getConnection(url, user, password);
-			
-			Statement stmt = con.createStatement();
-			
-			ResultSet rs = stmt.executeQuery("select * from user1");
-			
-			while(rs.next()) {
-				//System.out.println(rs.getString(2)+": "+rs.getString(3));
-				if(userName.equalsIgnoreCase(rs.getString(2)) && pass.equalsIgnoreCase(rs.getString(3))) {
-					isValid = true;
-				}
-				
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
+		UserService service = new UserService();
 		
 		request.setAttribute("name", userName);
 		
-		if(isValid) {
+		if(service.isValidUser(userName, pass)) {
 			RequestDispatcher rd = request.getRequestDispatcher("home.jsp");
 			rd.forward(request, response);
 		}
@@ -85,12 +58,9 @@ public class HelloServlet extends HttpServlet {
 			rd.forward(request, response);
 		}
 		
-		
-		
-		
+				
 		//response.setContentType("text/html");
 		//PrintWriter out = response.getWriter();
-		
 		
 	}
 
